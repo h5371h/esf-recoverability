@@ -1,0 +1,14 @@
+{
+  "default": 7,
+  "fdr_bh": 7,
+  "bayes": 7,
+  "mixed_effects": 7,
+  "stratified_bootstrap": 7,
+  "permutation_test": 7,
+  "effect_sizes": 7,
+  "aurc_bootstrap": 7,
+  "conformal": 7,
+  "mi": 7,
+  "seed_sensitivity_base": 7,
+  "n_permutations": 10000
+}

@@ -1,0 +1,21 @@
+# Frozen Python deps for the SPMB 2026 reproducibility sweep.
+# Tested with CPython 3.11 and 3.12 (the sweep itself is single-precision
+# numpy + scipy + onnxruntime so the Python minor version is irrelevant
+# beyond 3.10).
+
+# --- core numerics ---------------------------------------------------------
+numpy>=1.26,<2.2
+scipy>=1.13,<1.16
+pandas>=2.2,<2.4
+scikit-learn>=1.4,<1.7
+matplotlib>=3.8,<3.10
+
+# --- mixed-effects / Bayesian (advanced_stats.py) -------------------------
+statsmodels>=0.14,<0.15
+
+# --- EDF I/O + EEGPT ONNX inference (eval_loop.py) ------------------------
+mne>=1.6,<1.9
+onnxruntime>=1.17,<1.21
+
+# --- tests -----------------------------------------------------------------
+pytest>=8,<9
