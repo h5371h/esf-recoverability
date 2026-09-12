@@ -10,9 +10,8 @@ runs are involved and are listed explicitly so nothing is over-claimed:
 | Five-axis run (adds electrode montage and broadband SNR, plus the 60 uV line-noise cell) | `data/sweep_tuab_final.csv` (46 cells), `data/per_recording_predictions_tuab_final.csv` (12 696 rows) | 46 | Table 1 and the per-axis text of Sec. IV-B |
 
 The five-axis run is a superset of the three-axis run: the 28 shared cells
-are identical to the decimal. Figures 2-4 were rendered before the two
-additional axes were swept and therefore show three axes; the text and
-Table 1 report all five.
+are identical to the decimal. Figures 2-4 were rendered before the five-axis results were available
+and therefore show three axes; the text and Table 1 report all five.
 
 No clinical recordings are used anywhere in the paper. An earlier draft
 contained a small legacy-file ingestion demonstration on clinic data; it
@@ -56,7 +55,12 @@ ECE 0.125 (10 equal-width bins); per-bin Wilson 95 % binomial intervals.
 
 **Table 1 (`data/sweep_tuab_final.csv`).** Five-axis ESF sweep on TUAB
 (n = 276): AUROC, balanced accuracy and ECE for the naive and canonicalized
-arms at every severity. FDR asterisks from `src/run_all_advanced_stats.py`.
+arms at every severity. Asterisks: `src/run_all_advanced_stats.py` run on
+the five-axis files (README step 2b) tests 23 canon-vs-naive contrasts with
+DeLong + Benjamini-Hochberg and rejects 8: the four line-noise cells and
+the four non-identity sampling-rate cells. The submitted Table 1 leaves the
+256 Hz cell (adjusted p = 0.036) unstarred; that asterisk will be added in
+the camera-ready. Gain, montage and broadband contrasts are not significant.
 
 **Table 2 (`data/per_recording_failure_profile.csv`, produced by
 `src/failure_taxonomy.py`).** Failure-category prevalence stratified by

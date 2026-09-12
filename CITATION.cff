@@ -41,8 +41,8 @@ keywords:
   - reproducibility
   - SPMB
 license: MIT
-version: 1.0.0
-doi: 10.5281/zenodo.22726841
+version: 1.0.1
+doi: 10.5281/zenodo.22727770
 date-released: '2026-06-30'
 preferred-citation:
   type: conference-paper

@@ -49,9 +49,9 @@ Once the paper is accepted, the canonical BibTeX entry will be:
 ```
 
 If you use the code or the per-recording predictions, please also cite
-the archived software release (tag `v1.0.0-spmb2026-submission`):
+the archived software release (latest: tag `v1.0.1-spmb2026-repro`; the original 30 June snapshot is `v1.0.0-spmb2026-submission`, doi:10.5281/zenodo.22726841):
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22726841.svg)](https://doi.org/10.5281/zenodo.22726841)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22727770.svg)](https://doi.org/10.5281/zenodo.22727770)
 
 ```bibtex
 @software{dammu2026_esf_recoverability,
@@ -60,9 +60,9 @@ the archived software release (tag `v1.0.0-spmb2026-submission`):
                per-recording results for IEEE SPMB 2026},
   year      = {2026},
   publisher = {Zenodo},
-  version   = {v1.0.0-spmb2026-submission},
-  doi       = {10.5281/zenodo.22726841},
-  url       = {https://doi.org/10.5281/zenodo.22726841},
+  version   = {v1.0.1-spmb2026-repro},
+  doi       = {10.5281/zenodo.22727770},
+  url       = {https://doi.org/10.5281/zenodo.22727770},
 }
 ```
 
@@ -83,9 +83,12 @@ python src/failure_taxonomy.py
 python src/validation_compute.py
 ls figures/*.pdf data/theory/
 
-# 2) Recompute all advanced statistics + verification block
+# 2) Recompute all advanced statistics + verification block (three-axis run, Figures 2-5)
 python src/run_all_advanced_stats.py
 cat data/advanced_stats_summary.md
+
+# 2b) Same statistics on the five-axis run behind Table 1 (FDR over 23 canon-vs-naive contrasts)
+python src/run_all_advanced_stats.py --per-rec-csv data/per_recording_predictions_tuab_final.csv --sweep-csv data/sweep_tuab_final.csv --out-json data/advanced_stats_results_5axis.json --out-summary data/advanced_stats_summary_5axis.md
 
 # 3) Run the unit tests (no real data needed)
 pytest src/test_*.py -q
@@ -202,7 +205,7 @@ esf-recoverability/
     models/
       eegpt_backbone.py               ← ONNX inference wrapper
   figures/
-    fig_*.pdf                         ← 10 paper figures
+    fig_*.pdf                         ← paper figures 1-5 + six extended figures (see figures/captions.md)
     captions.md
   notebooks/
     reproduce_paper.ipynb             ← end-to-end notebook
