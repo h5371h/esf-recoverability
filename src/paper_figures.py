@@ -10,14 +10,12 @@ Outputs (PDF, IEEE conference column widths):
   fig_axes.pdf                     - AUROC + bal_acc per axis x severity
   fig_reliability.pdf              - Reliability diagram + ECE on clean baseline
   fig_coverage.pdf                 - Selective coverage-risk with operating points
-  fig_magna_ood.pdf                - Magna case study (n=5)
   fig_architecture.pdf             - 4-plane / pipeline schematic
   fig_roc_pr_curves.pdf            - ROC + PR with bootstrap 95% bands
   fig_calibration_decomposition.pdf - Brier reliability/resolution/uncertainty
   fig_effect_size_forest.pdf       - Cohen's d / Hedges' g per (axis,severity)
   fig_axis_heatmap.pdf             - Delta-AUROC heatmap with FDR significance
   fig_selective_risk_curve.pdf     - Full coverage-risk curve, AURC + E-AURC
-  fig_magna_ood_v2.pdf             - Magna OOD + Head A predictions overlay
   fig_pipeline_flow.pdf            - Annotated data-flow pipeline
 
 Author: Hitesh Dammu (regen tooling)
@@ -45,16 +43,13 @@ from matplotlib.colors import LinearSegmentedColormap  # noqa: E402
 
 # Repo-relative defaults so the same script renders identically from a
 # fresh checkout. Override via SPMB_DATA_DIR / SPMB_FIG_DIR env vars or
-# the CLI args wired by main(). The Magna case-study CSV is intentionally
-# NOT included in the public repository (clinical recordings); fig_magna_*
-# figures auto-skip when MAGNA_CSV is absent.
+# the CLI args wired by main().
 import os as _os
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = Path(_os.environ.get("SPMB_DATA_DIR", _REPO_ROOT / "data"))
 FIG_DIR = Path(_os.environ.get("SPMB_FIG_DIR", _REPO_ROOT / "figures"))
 SWEEP_CSV = DATA_DIR / "sweep_latest.csv"
 PRED_CSV = DATA_DIR / "per_recording_predictions_latest.csv"
-MAGNA_CSV = DATA_DIR / "spmb_case_study_results.csv"  # not shipped publicly
 
 # IEEE conference column widths
 COL = 3.5
@@ -582,54 +577,6 @@ def fig_coverage(preds: List[PredRow], out_path: Path) -> None:
 
 
 # --------------------------------------------------------------------------- #
-# fig_magna_ood (n=5)
-# --------------------------------------------------------------------------- #
-
-
-DROP_FILE = "Patient26_NATUSEEG-PC_t1_29Jul.e"
-
-
-def _load_magna(path: Path = MAGNA_CSV) -> List[Dict[str, str]]:
-    with open(path, newline="") as fh:
-        rows = [r for r in csv.DictReader(fh) if r["file"] != DROP_FILE]
-    return rows
-
-
-def _parse_logit(notes: str) -> float:
-    if "head_a_logit_saturated:" in notes:
-        try:
-            return float(notes.split("head_a_logit_saturated:")[1].split(";")[0])
-        except Exception:
-            return float("nan")
-    return float("nan")
-
-
-def fig_magna_ood(out_path: Path) -> None:
-    rows = _load_magna()
-    files = [r["file"].split(".")[0] for r in rows]
-    logits = np.array([_parse_logit(r["notes"]) for r in rows])
-    abs_logits = np.abs(logits)
-
-    fig, ax = plt.subplots(figsize=(COL, 2.6))
-    ys = np.arange(len(files))
-    colors = [PAL["abnormal"] if l > 0 else PAL["normal"] for l in logits]
-    ax.barh(ys, abs_logits, color=colors, edgecolor="black", linewidth=0.5, height=0.65)
-    ax.axvline(50, color=PAL["ood"], linestyle="--", lw=0.8, label="OOD threshold $|$logit$|$=50")
-    ax.set_yticks(ys)
-    ax.set_yticklabels([f.replace("_NATUSEEG-PC_t1", "") for f in files], fontsize=7)
-    ax.set_xlabel("$|$logit$|$ (post-Platt, log scale)")
-    ax.set_xscale("log")
-    ax.set_title(f"Magna (Hyderabad) Natus legacy: 5/5 flagged OOD", pad=4)
-    norm_p = mpatches.Patch(color=PAL["normal"], label="Head A: normal")
-    abn_p = mpatches.Patch(color=PAL["abnormal"], label="Head A: abnormal")
-    line = ax.lines[0]
-    ax.legend(handles=[norm_p, abn_p, line], loc="lower right", frameon=False, fontsize=7)
-    ax.grid(True, axis="x", linestyle=":", linewidth=0.4, alpha=0.6)
-    fig.savefig(out_path)
-    plt.close(fig)
-
-
-# --------------------------------------------------------------------------- #
 # fig_architecture - 4-plane block diagram
 # --------------------------------------------------------------------------- #
 
@@ -1025,43 +972,6 @@ def fig_selective_risk_curve(preds: List[PredRow], out_path: Path) -> None:
 
 
 # --------------------------------------------------------------------------- #
-# fig_magna_ood_v2
-# --------------------------------------------------------------------------- #
-
-
-def fig_magna_ood_v2(out_path: Path) -> None:
-    rows = _load_magna()
-    files = [r["file"].split(".")[0].replace("_NATUSEEG-PC_t1", "") for r in rows]
-    logits = np.array([_parse_logit(r["notes"]) for r in rows])
-    confs = np.array([float(r["head_a_conf"]) for r in rows])
-    preds = [r["head_a_class"] for r in rows]
-    # SE on logit derived from variance ~ |logit|*sqrt(1/n_windows); we lack per-window n here
-    # so we use 5% of |logit| as a heuristic visual error indicator (NOT a statistical CI).
-    visual_err = np.abs(logits) * 0.05
-
-    fig, ax = plt.subplots(figsize=(COL, 3.0))
-    ys = np.arange(len(files))
-    colors = [PAL["abnormal"] if p == "abnormal" else PAL["normal"] for p in preds]
-    ax.barh(ys, np.abs(logits), color=colors, edgecolor="black", linewidth=0.5, xerr=visual_err, ecolor="0.3", capsize=2.5, error_kw={"elinewidth": 0.6}, height=0.6)
-    ax.axvline(50, color=PAL["ood"], linestyle="--", lw=0.9, label="OOD threshold $|$logit$|$=50")
-    ax.set_yticks(ys)
-    ax.set_yticklabels(files, fontsize=7)
-    ax.set_xlabel("$|$logit$|$ (post-Platt, log scale)")
-    ax.set_xscale("log")
-    ax.set_xlim(left=1)
-    ax.set_title("Magna (Hyderabad) Natus Nicolet, 125 Hz native\n5/5 files flagged OOD by selective head", pad=4, fontsize=9)
-    for i, (l, p, c) in enumerate(zip(logits, preds, confs)):
-        ax.text(np.abs(l) * 1.08, i, f"{p[:3]} ({c:.2f})", va="center", fontsize=6, color="0.25")
-    norm_h = mpatches.Patch(color=PAL["normal"], label="Head A: normal")
-    abn_h = mpatches.Patch(color=PAL["abnormal"], label="Head A: abnormal")
-    line_h = plt.Line2D([0], [0], color=PAL["ood"], linestyle="--", label="OOD threshold")
-    ax.legend(handles=[norm_h, abn_h, line_h], loc="lower right", frameon=False, fontsize=7)
-    ax.grid(True, axis="x", linestyle=":", linewidth=0.4, alpha=0.6)
-    fig.savefig(out_path)
-    plt.close(fig)
-
-
-# --------------------------------------------------------------------------- #
 # fig_pipeline_flow
 # --------------------------------------------------------------------------- #
 
@@ -1126,21 +1036,15 @@ def regenerate_all(out_dir: Path = FIG_DIR) -> Dict[str, Path]:
         ("fig_axes.pdf", lambda p: fig_axes(sweep, p), False),
         ("fig_reliability.pdf", lambda p: fig_reliability(preds, p), False),
         ("fig_coverage.pdf", lambda p: fig_coverage(preds, p), False),
-        ("fig_magna_ood.pdf", lambda p: fig_magna_ood(p), True),
         ("fig_architecture.pdf", lambda p: fig_architecture(p), False),
         ("fig_roc_pr_curves.pdf", lambda p: fig_roc_pr_curves(preds, p), False),
         ("fig_calibration_decomposition.pdf", lambda p: fig_calibration_decomposition(preds, p), False),
         ("fig_effect_size_forest.pdf", lambda p: fig_effect_size_forest(preds, p), False),
         ("fig_axis_heatmap.pdf", lambda p: fig_axis_heatmap(sweep, preds, p), False),
         ("fig_selective_risk_curve.pdf", lambda p: fig_selective_risk_curve(preds, p), False),
-        ("fig_magna_ood_v2.pdf", lambda p: fig_magna_ood_v2(p), True),
         ("fig_pipeline_flow.pdf", lambda p: fig_pipeline_flow(p), False),
     ]
-    magna_present = MAGNA_CSV.exists()
-    for name, fn, needs_magna in plan:
-        if needs_magna and not magna_present:
-            print(f"skip {name} (Magna case-study CSV not present — clinical data, not shipped)")
-            continue
+    for name, fn, _ in plan:
         path = out_dir / name
         fn(path)
         out[name] = path

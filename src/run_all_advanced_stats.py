@@ -4,7 +4,7 @@ Orchestrator: run every advanced-stats method and write the results to disk.
 Inputs (auto-detected under <repo>/data/):
     per_recording_predictions_latest.csv     -- 7728 rows
     sweep_latest.csv                         -- 28 summary rows
-    spmb_case_study_results.csv              -- 5 clinical files (NOT shipped
+    spmb_case_study_results.csv              -- optional, not used by the paper (NOT shipped
                                                 publicly; verification skips
                                                 the case-study check when
                                                 this CSV is absent)
@@ -527,8 +527,8 @@ def run_verification(df: pd.DataFrame, sweep: pd.DataFrame,
     # — the public repo deliberately omits it; this check skips silently
     # so reviewers without it can still verify the other 14 numbers).
     if case_study is not None:
-        _check("n_unique_magna_files_after_drop", 5, int(case_study.shape[0]),
-               "§Magna case study")
+        _check("n_unique_case_study_files_after_drop", 5, int(case_study.shape[0]),
+               "optional case-study CSV (not part of the submitted paper)")
 
     return rep
 
@@ -841,7 +841,7 @@ def main(argv=None) -> int:
         case_study = None
         ncs = 0
         print(f"[load] case-study CSV not present at {args.case_study_csv} "
-              "(clinical data, not in public repo) — Magna-specific checks skipped")
+              "(optional; not part of the submitted paper) — case-study checks skipped")
     print(f"[load] {len(df)} per-rec rows, {len(sweep)} sweep rows, {ncs} case-study rows")
 
     results: dict[str, Any] = {}

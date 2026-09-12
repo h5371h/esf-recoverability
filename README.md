@@ -18,17 +18,18 @@ same TUAB recordings + the same RNG seed.
 
 | Artifact | Source in repo | Effort to regenerate |
 | --- | --- | --- |
-| Aggregate sweep table (Table 1) | `data/sweep_latest.csv` | already shipped |
-| Per-recording predictions (n = 7 728 rows) | `data/per_recording_predictions_latest.csv` | already shipped |
-| Advanced statistics (FDR, mixed-effects, AURC, …) | `data/advanced_stats_results.json` + `.md` | `python src/run_all_advanced_stats.py` (~1 min) |
-| All 10 paper figures (PDF) | `figures/fig_*.pdf` + `src/paper_figures.py` | `python src/paper_figures.py` (~30 s) |
-| End-to-end sweep from raw EDFs | `src/eval_loop.py` | requires TUH access; ~3–6 h on 16-core CPU |
+| Table 1: five-axis sweep (46 cells) | `data/sweep_tuab_final.csv` | already shipped |
+| Per-recording predictions, five-axis run (12 696 rows) | `data/per_recording_predictions_tuab_final.csv` | already shipped |
+| Three-axis run used by Figures 2-5 (28 cells, 7 728 rows) | `data/sweep_latest.csv`, `data/per_recording_predictions_latest.csv` | already shipped |
+| Figures 1, 2, 3, 5 (PDF) | `src/paper_figures.py` | `python src/paper_figures.py` (~30 s) |
+| Figure 4 + Table 2 (failure taxonomy) | `src/failure_taxonomy.py` -> `figures/fig_failure_taxonomy.pdf`, `data/per_recording_failure_profile.csv` | `python src/failure_taxonomy.py` (~20 s) |
+| Pinsker bound validation (Sec. IV-C) | `src/validation_compute.py` -> `data/theory/` | `python src/validation_compute.py` (~10 s) |
+| Advanced statistics (FDR, mixed-effects, AURC, ...) | `data/advanced_stats_results.json` + `.md` | `python src/run_all_advanced_stats.py` (~1 min) |
+| End-to-end sweep from raw EDFs | `src/eval_loop.py` | requires TUH access; ~3-6 h on 16-core CPU |
 
-The two Magna-clinic case-study figures (Fig. 5, 11) and their backing
-CSV are intentionally **not** in this repo — the underlying recordings
-are clinical EEGs that cannot be redistributed. See
-`figures/captions.md` for the note that ships in the paper's
-supplementary material.
+`figures/captions.md` states, figure by figure, which of the two data
+runs each panel and table comes from. No clinical recordings are used in
+the paper or in this repository.
 
 ---
 
@@ -76,9 +77,11 @@ cd esf-recoverability
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# 1) Regenerate every figure (10 of 12 — Magna figures auto-skip)
+# 1) Regenerate the figures, the failure taxonomy (Fig. 4 + Table 2) and the Pinsker validation
 python src/paper_figures.py
-ls figures/*.pdf
+python src/failure_taxonomy.py
+python src/validation_compute.py
+ls figures/*.pdf data/theory/
 
 # 2) Recompute all advanced statistics + verification block
 python src/run_all_advanced_stats.py

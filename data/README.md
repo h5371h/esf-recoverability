@@ -47,11 +47,15 @@ TUAB v3.0.1 eval split listed in `manifest_tuab_eval.json`.
 3. Cross-check the layout against the manifest — every rec_id should
    resolve to `$TUH_ROOT/edf/eval/{normal,abnormal}/<rec_id>.edf`.
 
-## Why no clinical / Magna data is shipped
+## Additional files for the submitted paper
 
-The paper's Sec. 5.5 case study uses five Natus-format `.e` files from
-Magna Neurology, Hyderabad. These are clinical EEGs and cannot be
-redistributed under MIT. The figure-generation code
-(`src/paper_figures.py`) auto-skips the two Magna panels when the
-backing CSV is absent — every other figure and statistic regenerates
-identically from the TUAB CSVs shipped above.
+* `sweep_tuab_final.csv` (46 cells, five axes) backs Table 1.
+* `per_recording_predictions_tuab_final.csv` (12 696 rows) is the
+  per-recording output of that five-axis run.
+* `per_recording_failure_profile.csv`, `failure_exemplars.md`,
+  `axis_vulnerability_ranking.md` and `failure_taxonomy_subsection.tex`
+  are written by `src/failure_taxonomy.py` (Fig. 4, Table 2).
+* `theory/` is written by `src/validation_compute.py` (Pinsker validation,
+  Sec. IV-C).
+
+No clinical recordings are used in the paper or shipped here.

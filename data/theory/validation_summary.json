@@ -1,0 +1,19 @@
+{
+  "baseline_auroc": 0.907937,
+  "n_axes": 3,
+  "axes": [
+    "calibration",
+    "power_line",
+    "sampling_rate"
+  ],
+  "C_implied_median": 0.1018642877938891,
+  "C_implied_max": 0.46683434473869306,
+  "pinsker_bound_holds_with_C_max_fraction": 1.0,
+  "recoverability_summary": {
+    "power_line": "RECOVERABLE (invertible notch); canon recovers AUROC at every severity from naive 0.612 to canon ~0.909",
+    "calibration_mild": "RECOVERABLE (left-invertible scalar); recovers AUROC for moderate gain (g=0.5: naive 0.865, canon 0.900)",
+    "sampling_rate_mid_band": "RECOVERABLE (Nyquist-safe); 256 Hz native canon 0.902 ~= baseline 0.908",
+    "sampling_rate_sub_nyquist": "IRRECOVERABLE (Shannon bound); 128 Hz native canon 0.758 (loss 0.150)",
+    "sampling_rate_supra": "PARTIALLY IRRECOVERABLE (kernel mismatch in EEGPT receptive band); 512 Hz native canon 0.752 (loss 0.156)"
+  }
+}

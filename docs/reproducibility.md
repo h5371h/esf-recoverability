@@ -5,9 +5,9 @@ figures.
 
 ## Tier A — five-minute reproduction (no TUH access needed)
 
-Goal: regenerate every figure (except Magna Fig. 5/11/13) and every
-statistic in `advanced_stats_summary.md` from the CSVs already in
-`data/`.
+Goal: regenerate every figure and table in the submitted paper, and every
+statistic in `advanced_stats_summary.md`, from the CSVs already in
+`data/`. See `figures/captions.md` for which data run backs each item.
 
 ```bash
 git clone https://github.com/h5371h/esf-recoverability.git

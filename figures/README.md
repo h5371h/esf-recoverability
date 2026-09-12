@@ -18,22 +18,19 @@ place — each PDF is written to `figures/<name>.pdf`.
 
 | Figure | Function in `paper_figures.py` | Source data |
 | --- | --- | --- |
-| Fig. 1 `fig_architecture.pdf` | `fig_architecture` | none (drawn) |
-| Fig. 2 `fig_axes.pdf` | `fig_axes` | `sweep_latest.csv` |
-| Fig. 3 `fig_reliability.pdf` | `fig_reliability` | `per_recording_predictions_latest.csv` (clean baseline) |
-| Fig. 4 `fig_coverage.pdf` | `fig_coverage` | `per_recording_predictions_latest.csv` (non-clean conditions) |
-| Fig. 5 `fig_magna_ood.pdf` | `fig_magna_ood` | *clinical, not in repo* |
-| Fig. 6 `fig_roc_pr_curves.pdf` | `fig_roc_pr_curves` | `per_recording_predictions_latest.csv` |
-| Fig. 7 `fig_calibration_decomposition.pdf` | `fig_calibration_decomposition` | `per_recording_predictions_latest.csv` |
-| Fig. 8 `fig_effect_size_forest.pdf` | `fig_effect_size_forest` | `per_recording_predictions_latest.csv` |
-| Fig. 9 `fig_axis_heatmap.pdf` | `fig_axis_heatmap` | both CSVs |
-| Fig. 10 `fig_selective_risk_curve.pdf` | `fig_selective_risk_curve` | `per_recording_predictions_latest.csv` |
-| Fig. 11 `fig_magna_ood_v2.pdf` | `fig_magna_ood_v2` | *clinical, not in repo* |
-| Fig. 12 `fig_pipeline_flow.pdf` | `fig_pipeline_flow` | none (drawn) |
+| Paper item | File | Generator | Data |
+| --- | --- | --- | --- |
+| Fig. 1 | `fig_architecture.pdf` | `paper_figures.fig_architecture` | none (drawn) |
+| Fig. 2 | `fig_axes.pdf` | `paper_figures.fig_axes` | `sweep_latest.csv` (three-axis run) |
+| Fig. 3 | `fig_axis_heatmap.pdf` | `paper_figures.fig_axis_heatmap` | `sweep_latest.csv` + `per_recording_predictions_latest.csv` |
+| Fig. 4 | `fig_failure_taxonomy.pdf` | `src/failure_taxonomy.py` | `per_recording_predictions_latest.csv` |
+| Fig. 5 | `fig_reliability.pdf` | `paper_figures.fig_reliability` | `per_recording_predictions_latest.csv` (clean baseline) |
+| Table 1 | (table) | `run_all_advanced_stats.py` for FDR marks | `sweep_tuab_final.csv` (five-axis run) |
+| Table 2 | (table) | `src/failure_taxonomy.py` | `per_recording_failure_profile.csv` |
+| Extended | `fig_coverage.pdf`, `fig_roc_pr_curves.pdf`, `fig_calibration_decomposition.pdf`, `fig_effect_size_forest.pdf`, `fig_selective_risk_curve.pdf`, `fig_pipeline_flow.pdf` | `paper_figures.py` | three-axis run; not in the submitted paper |
 
-Figures 5, 11, and 13 (the legacy Magna composite) are auto-skipped on
-a public clone because the underlying clinical CSV is not
-redistributable. See `captions.md` for the disclosure.
+All figures regenerate on a public clone; no clinical data is involved.
+See `captions.md` for the full provenance note.
 
 The fonts and DPI in `apply_rcparams()` are IEEE conference-style; the
 PDFs render with `pdf.fonttype = 42` so all glyphs are embedded as
