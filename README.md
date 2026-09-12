@@ -48,9 +48,22 @@ Once the paper is accepted, the canonical BibTeX entry will be:
 ```
 
 If you use the code or the per-recording predictions, please also cite
-the repository via the DOI minted on Zenodo (see `docs/zenodo_setup.md`
-for the linkage workflow) and the SPMB 2026 submission tag
-`v1.0.0-spmb2026-submission`.
+the archived software release (tag `v1.0.0-spmb2026-submission`):
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22726841.svg)](https://doi.org/10.5281/zenodo.22726841)
+
+```bibtex
+@software{dammu2026_esf_recoverability,
+  author    = {Hitesh Dammu},
+  title     = {esf-recoverability: reference implementation and
+               per-recording results for IEEE SPMB 2026},
+  year      = {2026},
+  publisher = {Zenodo},
+  version   = {v1.0.0-spmb2026-submission},
+  doi       = {10.5281/zenodo.22726841},
+  url       = {https://doi.org/10.5281/zenodo.22726841},
+}
+```
 
 ---
 
