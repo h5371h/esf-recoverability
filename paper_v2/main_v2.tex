@@ -144,7 +144,7 @@ reports and the third turns abnormal recordings into confident normal
 ones; with it, those failures disappear exactly where the sweep says
 they should. Controls, a label-free monitor that fails, and six
 recordings from a $125$\,Hz Natus recorder complete the study. v2
-corrects v1 (Version note). Code, probes, caches and per-recording
+corrects v1 (Version note). Code, probes and per-recording
 predictions are released.
 \end{abstract}
 
@@ -537,8 +537,8 @@ contract cannot reach.
 
 \section*{Reproducibility}
 \label{sec:repro}
-Code, operators, adapters, all probes, feature caches, per-cell
-predictions for every (backbone, probe, cell), tables and proofs:
+Code, operators, adapters, all twelve probes, per-cell predictions
+for every (model, probe, cell), tables and proofs:
 \url{https://github.com/h5371h/esf-recoverability} (MIT; tag
 \texttt{v2.0.0-preprint-v2}, archived as doi:10.5281/zenodo.22771925; the
 withdrawn v1
@@ -546,7 +546,10 @@ snapshot remains at \texttt{v1.0.0-spmb2026-submission}). TUAB is
 obtained under the NEDC agreement~\cite{lopez2015abnormal}; the legacy
 recordings are clinical data, processed locally and not released.
 Checkpoint revisions, library versions and seeds: Appendix~E. Every
-number regenerates from the released caches without a GPU.
+table and figure regenerates from the released per-recording
+predictions without a GPU; the feature and cell caches (about
+$12$\,GB) are not archived and regenerate from the released scripts
+in a few GPU-hours (Appendix~E).
 \textit{Cost.} On a $30$-core CPU the full contract takes $0.64$\,s per
 $25$-min recording (notch $0.28$, EDF read $0.23$, robust z $0.17$,
 high-pass $0.16$, CAR $0.02$, resample $<0.01$\,s); the backbones take
