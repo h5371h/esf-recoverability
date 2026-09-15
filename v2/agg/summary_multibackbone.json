@@ -1,0 +1,262 @@
+{
+ "biot": {
+  "linear": {
+   "baseline_mean": 0.878624,
+   "baseline_min": 0.878624,
+   "baseline_max": 0.878624,
+   "n_seeds": 1
+  },
+  "mlp": {
+   "baseline_mean": 0.8980776666666667,
+   "baseline_min": 0.89164,
+   "baseline_max": 0.901323,
+   "n_seeds": 3
+  },
+  "envelope_tol_0.01": {
+   "bandwidth/100": true,
+   "bandwidth/15": false,
+   "bandwidth/20": false,
+   "bandwidth/25": false,
+   "bandwidth/30": false,
+   "bandwidth/40": false,
+   "bandwidth/50": false,
+   "bandwidth/64": false,
+   "bandwidth/80": false,
+   "broadband/-5": false,
+   "broadband/0": false,
+   "broadband/10": false,
+   "broadband/20": false,
+   "broadband/5": false,
+   "calibration/0.5": true,
+   "calibration/0.75": true,
+   "calibration/1": true,
+   "calibration/1.5": true,
+   "calibration/2": true,
+   "montage/bipolar18": false,
+   "montage/full19": true,
+   "montage/legacy16": false,
+   "power_line/0": true,
+   "power_line/15": true,
+   "power_line/30": true,
+   "power_line/5": true,
+   "power_line/60": true,
+   "sampling_rate/128": false,
+   "sampling_rate/200": true,
+   "sampling_rate/250": true,
+   "sampling_rate/256": true,
+   "sampling_rate/512": true
+  },
+  "envelope_A1_A4_outside": [
+   "montage/bipolar18",
+   "montage/legacy16",
+   "sampling_rate/128"
+  ],
+  "stage_attribution": {
+   "broadband": {
+    "worst_severity": "-5",
+    "naive": 0.678289,
+    "canon": 0.678289,
+    "recovery": 0.0
+   },
+   "calibration": {
+    "worst_severity": "0.5",
+    "naive": 0.8362963333333333,
+    "canon": 0.8980776666666667,
+    "recovery": 0.061781333333333355
+   },
+   "montage": {
+    "worst_severity": "legacy16",
+    "naive": 0.8728746666666667,
+    "canon": 0.8666136666666667,
+    "recovery": -0.006260999999999961
+   },
+   "power_line": {
+    "worst_severity": "60",
+    "naive": 0.6268253333333332,
+    "canon": 0.897672,
+    "recovery": 0.2708466666666668
+   },
+   "sampling_rate": {
+    "worst_severity": "512",
+    "naive": 0.403351,
+    "canon": 0.8980070000000001,
+    "recovery": 0.4946560000000001
+   }
+  }
+ },
+ "eegpt": {
+  "linear": {
+   "baseline_mean": 0.887619,
+   "baseline_min": 0.887619,
+   "baseline_max": 0.887619,
+   "n_seeds": 1
+  },
+  "mlp": {
+   "baseline_mean": 0.900388,
+   "baseline_min": 0.895026,
+   "baseline_max": 0.903704,
+   "n_seeds": 3
+  },
+  "envelope_tol_0.01": {
+   "bandwidth/100": true,
+   "bandwidth/15": true,
+   "bandwidth/20": true,
+   "bandwidth/25": true,
+   "bandwidth/30": true,
+   "bandwidth/40": true,
+   "bandwidth/50": true,
+   "bandwidth/64": true,
+   "bandwidth/80": true,
+   "broadband/-5": false,
+   "broadband/0": false,
+   "broadband/10": false,
+   "broadband/20": false,
+   "broadband/5": false,
+   "calibration/0.5": true,
+   "calibration/0.75": true,
+   "calibration/1": true,
+   "calibration/1.5": true,
+   "calibration/2": true,
+   "montage/bipolar18": false,
+   "montage/full19": true,
+   "montage/legacy16": false,
+   "power_line/0": true,
+   "power_line/15": true,
+   "power_line/30": true,
+   "power_line/5": true,
+   "power_line/60": true,
+   "sampling_rate/128": true,
+   "sampling_rate/200": true,
+   "sampling_rate/250": true,
+   "sampling_rate/256": true,
+   "sampling_rate/512": true
+  },
+  "envelope_A1_A4_outside": [
+   "montage/bipolar18",
+   "montage/legacy16"
+  ],
+  "stage_attribution": {
+   "broadband": {
+    "worst_severity": "-5",
+    "naive": 0.7372133333333334,
+    "canon": 0.7372133333333334,
+    "recovery": 0.0
+   },
+   "calibration": {
+    "worst_severity": "0.5",
+    "naive": 0.819947,
+    "canon": 0.900388,
+    "recovery": 0.08044099999999998
+   },
+   "montage": {
+    "worst_severity": "bipolar18",
+    "naive": 0.8783949999999999,
+    "canon": 0.8799823333333334,
+    "recovery": 0.001587333333333496
+   },
+   "power_line": {
+    "worst_severity": "60",
+    "naive": 0.5984303333333333,
+    "canon": 0.9002823333333333,
+    "recovery": 0.301852
+   },
+   "sampling_rate": {
+    "worst_severity": "512",
+    "naive": 0.7270546666666666,
+    "canon": 0.900335,
+    "recovery": 0.17328033333333337
+   }
+  }
+ },
+ "labram": {
+  "linear": {
+   "baseline_mean": 0.893704,
+   "baseline_min": 0.893704,
+   "baseline_max": 0.893704,
+   "n_seeds": 1
+  },
+  "mlp": {
+   "baseline_mean": 0.894427,
+   "baseline_min": 0.88963,
+   "baseline_max": 0.903492,
+   "n_seeds": 3
+  },
+  "envelope_tol_0.01": {
+   "bandwidth/100": true,
+   "bandwidth/15": false,
+   "bandwidth/20": false,
+   "bandwidth/25": false,
+   "bandwidth/30": false,
+   "bandwidth/40": false,
+   "bandwidth/50": false,
+   "bandwidth/64": false,
+   "bandwidth/80": false,
+   "broadband/-5": false,
+   "broadband/0": false,
+   "broadband/10": false,
+   "broadband/20": false,
+   "broadband/5": false,
+   "calibration/0.5": true,
+   "calibration/0.75": true,
+   "calibration/1": true,
+   "calibration/1.5": true,
+   "calibration/2": true,
+   "montage/bipolar18": false,
+   "montage/full19": true,
+   "montage/legacy16": false,
+   "power_line/0": true,
+   "power_line/15": true,
+   "power_line/30": true,
+   "power_line/5": true,
+   "power_line/60": true,
+   "sampling_rate/128": false,
+   "sampling_rate/200": true,
+   "sampling_rate/250": true,
+   "sampling_rate/256": true,
+   "sampling_rate/512": true
+  },
+  "envelope_A1_A4_outside": [
+   "montage/bipolar18",
+   "montage/legacy16",
+   "sampling_rate/128"
+  ],
+  "stage_attribution": {
+   "bandwidth": {
+    "worst_severity": "64",
+    "naive": 0.8147443333333334,
+    "canon": 0.8147443333333334,
+    "recovery": 0.0
+   },
+   "broadband": {
+    "worst_severity": "-5",
+    "naive": 0.6908113333333333,
+    "canon": 0.6908113333333333,
+    "recovery": 0.0
+   },
+   "calibration": {
+    "worst_severity": "0.5",
+    "naive": 0.8750969999999999,
+    "canon": 0.894427,
+    "recovery": 0.01933000000000007
+   },
+   "montage": {
+    "worst_severity": "legacy16",
+    "naive": 0.8509346666666667,
+    "canon": 0.850247,
+    "recovery": -0.000687666666666753
+   },
+   "power_line": {
+    "worst_severity": "60",
+    "naive": 0.6811463333333334,
+    "canon": 0.8937566666666666,
+    "recovery": 0.21261033333333323
+   },
+   "sampling_rate": {
+    "worst_severity": "512",
+    "naive": 0.6075836666666666,
+    "canon": 0.8945150000000001,
+    "recovery": 0.2869313333333334
+   }
+  }
+ }
+}

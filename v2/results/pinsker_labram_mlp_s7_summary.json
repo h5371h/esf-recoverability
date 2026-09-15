@@ -1,0 +1,8 @@
+{
+ "baseline_auroc": 0.8896296296296297,
+ "n_arms": 40,
+ "cc_bound_holds": 40,
+ "implied_C_median": 0.19881629737488052,
+ "implied_C_max": 2.250970044548003,
+ "worst_cc_slack": 3.036425172601034e-07
+}

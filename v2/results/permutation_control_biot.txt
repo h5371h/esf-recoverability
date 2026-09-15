@@ -1,0 +1,12 @@
+/tmp/perm_biot_1.pt: eval AUROC 0.5876 (n=276)
+/tmp/perm_biot_2.pt: eval AUROC 0.5597 (n=276)
+/tmp/perm_biot_3.pt: eval AUROC 0.6377 (n=276)
+/tmp/perm_biot_4.pt: eval AUROC 0.5474 (n=276)
+/tmp/perm_biot_5.pt: eval AUROC 0.4935 (n=276)
+/tmp/perm_biot_6.pt: eval AUROC 0.5862 (n=276)
+/tmp/perm_biot_7.pt: eval AUROC 0.6129 (n=276)
+/tmp/perm_biot_8.pt: eval AUROC 0.5590 (n=276)
+/tmp/perm_biot_9.pt: eval AUROC 0.6116 (n=276)
+/tmp/perm_biot_10.pt: eval AUROC 0.5979 (n=276)
+/tmp/perm_biot_lin.pt: eval AUROC 0.4424 (n=276)
+PERMUTATION_CONTROL_DONE biot

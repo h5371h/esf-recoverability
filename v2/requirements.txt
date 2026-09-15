@@ -1,0 +1,8 @@
+braindecode>=1.5
+huggingface_hub
+safetensors
+mne>=1.6
+scipy
+scikit-learn
+pandas
+numpy

@@ -1,0 +1,505 @@
+%% =====================================================================
+%%  IEEE SPMB 2026 — Supplement to v4
+%%  Appendix A: Full proofs for the ESF Recoverability Framework
+%%  (Definition 1, Propositions 1 and 2, Theorem 1)
+%% =====================================================================
+
+\documentclass[conference]{IEEEtran}
+
+\IEEEoverridecommandlockouts
+\usepackage{amsmath,graphicx,soul,subcaption,balance}
+\usepackage[numbers,sort&compress]{natbib}
+\renewcommand\bibsection{\section*{\normalsize References}}
+\usepackage{float}
+\usepackage{times}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{soul,mathrsfs}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage[hyphens, spaces, obeyspaces]{url}
+\def\UrlFont{\em}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{amssymb,amsfonts,amsthm}
+
+
+\usepackage{caption}
+\captionsetup[figure]{font=small,name=Fig.}
+\captionsetup[table]{font=small,name=TABLE}
+
+\captionsetup{justification=justified,singlelinecheck=true}
+\captionsetup{belowskip=0pt}
+
+
+
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{Supplement to ``ESF: Harmonizing Heterogeneous EEG Acquisition for
+Pretrained Classifiers'' --- Appendix A: Proofs}
+\author{\IEEEauthorblockN{Hitesh Dammu}
+\IEEEauthorblockA{Independent Researcher, Hyderabad, India \\ hdammu@asu.edu}}
+
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\newcommand{\PINSKERNUMBERS}{Over the $40$ measured non-identity arms the class-conditional bound holds on $40/40$ for EEGPT and $40/40$ for BIOT\PINSKERLABRAM, and is vacuous (sum of class-conditional TVs above $1$) on the strongly shifted naive arms; the marginal ratio has median $0.15$ (EEGPT) and $0.24$ (BIOT) and maximum $1.41$ and $1.35$ respectively, both on the $128$\,Hz naive arm, so no marginal constant below $1$ exists for any backbone in this sweep.}
+\newcommand{\PINSKERLABRAM}{}
+\newcommand{\LABRAMABS}{}
+\newcommand{\LABRAMDISC}{}
+\newcommand{\LABRAMAONE}{}
+\newcommand{\LABRAMATWO}{}
+\newcommand{\LABRAMATHREE}{}
+\newcommand{\LABRAMAFOUR}{}
+\newcommand{\LABRAMAFIVE}{}
+\newcommand{\BANDWIDTHOTHERS}{}
+\newcommand{\ENVELOPETEXT}{}
+\newcommand{\LABRAMBASE}{}
+\newcommand{\EEGPTPRETRAIN}{(PhysioNet motor imagery, the Tsinghua SSVEP benchmark, M3CV and SEED, per the authors' repository)}
+\begin{document}
+\maketitle
+
+\section*{Appendix A: Proofs}
+
+\subsection*{A.1 Standing assumptions}
+\begin{itemize}\itemsep0pt
+\item[(S1)] Signals $s$ are finite-energy real-valued multichannel
+functions on $[0,T] \times \{1,\dots,C\}$, identified with elements of
+$L^2([0,T])^C$.
+\item[(S2)] The canonical band is $\mathcal{B} = [0, f_{\max}]$ with
+$f_{\max} \le f_0/2$; the canonical rate is $f_0{=}250$\,Hz, with
+$f_{\max}{=}70$\,Hz.
+\item[(S3)] The acquisition operator $A_\theta$ is measurable from
+$\mathcal{S}$ to a discrete-time space $\hat{\mathcal{S}}_\theta$;
+$K_\theta$ is measurable in the other direction.
+\item[(S4)] The classifier $f : \mathcal{S} \to \{0,1\}$ is the
+composition of a frozen feature map $g : \mathcal{S} \to \mathbb{R}^d$
+and a linear probe $w : \mathbb{R}^d \to \mathbb{R}$ thresholded at
+$0$. AUROC $\mathcal{A}(f; \mathcal{D})$ is the probability that the
+probe ranks a positive example above a negative example,
+$\Pr(w(g(X^+)) > w(g(X^-)))$.
+\end{itemize}
+
+\subsection*{A.2 Proof of Proposition~1 (left-invertibility $\Rightarrow$ recoverability)}
+By assumption $A_\theta$ is left-invertible with inverse
+$A_\theta^{-L}$. Set $K_\theta = A_\theta^{-L}$. Then for every
+$s \in \mathcal{S}$
+\[ K_\theta(A_\theta(s)) = s, \]
+hence $f \circ K_\theta \circ A_\theta = f$ pointwise, and the AUROC
+functional is unchanged. The gap in Definition~1 is exactly $0$,
+i.e., the axis is $(f,0)$-recoverable. $\square$
+
+\paragraph{Specialization to per-channel gain.} $A_g s = g \cdot s$
+with $g \in (0, \infty)^C$ is left-invertible by $A_g^{-L} h = g^{-1}
+\cdot h$ (channel-wise). Numerical implementation has roundoff
+$O(2^{-\text{mantissa}})$, which explains the small residual gap
+observed at $g \in \{0.5, 0.75\}$.
+
+\paragraph{Specialization to power-line interference.} The
+deterministic sinusoidal injection $A_{\nu,a} s = s + a \sin(2\pi \nu
+t)$ is left-invertible by subtracting the sinusoid (or, in the
+IIR-notch implementation used here, by a narrowband notch at $\nu$ with
+passband leakage bounded by a target $\epsilon_{\text{pass}}$). With
+$\Delta \nu = 1$\,Hz and $\nu = 50$\,Hz the passband loss inside
+$\mathcal{B}$ is empirically $<10^{-3}$ in the AUROC functional, well
+within the $\varepsilon = 0$ regime up to numerical precision.
+
+\subsection*{A.3 Proof of Proposition~2 (sub-Nyquist irrecoverability)}
+\label{app:proof_nyquist}
+Let $S(\omega) = \int s(t) e^{-i\omega t}\,dt$ denote the Fourier
+transform of $s$ (component-wise). The acquisition operator $A_\theta$
+consists of (i) the ideal low-pass projection $\Pi_{f_n/2}$ onto
+frequencies in $[0, f_n/2]$, and (ii) uniform decimation to $f_n$. By
+the Shannon sampling theorem, the decimated representation
+$A_\theta(s)$ depends only on $\Pi_{f_n/2}(s)$, that is,
+$A_\theta(s) = A_\theta(\Pi_{f_n/2} s)$. Therefore for every
+canonicalization $K_\theta$, the composition
+$(K_\theta \circ A_\theta)(s) = (K_\theta \circ A_\theta)(\Pi_{f_n/2}
+s)$; the image lies in the bandlimited subspace
+$\mathcal{S}_{f_n/2} = \{s : \mathrm{supp}(S) \subseteq [0, f_n/2]\}$
+regardless of $K_\theta$.
+
+Now consider two test signals $s, s' \in \mathcal{S}$ that agree on
+$\Pi_{f_n/2}$ but for which $f(s) \ne f(s')$ (such a pair exists by
+hypothesis). Their composition images are identical:
+$(f \circ K_\theta \circ A_\theta)(s) = (f \circ K_\theta \circ
+A_\theta)(s')$, yet the truth labels (and the clean predictions)
+differ. This produces a mandatory label-disagreement contribution to
+the AUROC under any $K_\theta$. The AUROC functional restricted to
+$\mathcal{S}_{f_n/2}$ is a lower bound for any $K_\theta$, hence
+\[
+\mathcal{A}(f \circ K_\theta \circ A_\theta; \mathcal{D}) \le
+\mathcal{A}(f|_{\mathcal{S}_{f_n/2}}; \mathcal{D}),
+\]
+and the gap to $\mathcal{A}(f; \mathcal{D})$ is irrecoverable.
+$\square$
+
+\paragraph{Empirical status of Proposition~2 on this classifier (v2).}
+Proposition~2 is conditional: it applies when $f$ depends on spectral
+content in $(f_n/2, f_{\max}]$. The v2 sweep, in which a $128$\,Hz
+acquisition is simulated by anti-aliased decimation of the source
+recording and then canonicalized back to $250$\,Hz, measures a
+canonicalized AUROC of $0.903$ against a baseline of $0.904$
+(gap $0.0004$, not significant). The band $(64, 125]$\,Hz therefore
+carries no information that this frozen EEGPT probe uses on TUAB, and
+the hypothesis of Proposition~2 is not met: the proposition predicts a
+nonzero gap only when the lost band is load-bearing, and for this
+classifier it is not. The v1 report of a $0.150$ loss at $128$\,Hz was
+an artefact of the v1 implementation, which time-warped the
+$250$\,Hz signal rather than simulating acquisition (Version note).
+The same holds at $f_n{=}512$\,Hz (canonicalized AUROC $0.904$); the
+v1 ``on-device anti-alias kernel mismatch'' explanation described a
+filter the author had written, not a device property, and is
+withdrawn. What the $128$ and $512$\,Hz cells do show is the cost of
+\emph{not} canonicalizing: the naive arm, which presents native samples
+to the model as if they were at $250$\,Hz, falls to AUROC $0.735$ and
+$0.723$ respectively (both FDR-significant), so the sampling-rate axis
+is recoverable in practice and the recovery is large.
+
+\paragraph{Extension to broadband Gaussian noise.} Additive
+zero-mean broadband Gaussian noise $A_\sigma s = s + n$, $n \sim
+\mathcal{N}(0, \sigma^2 I)$, is not left-invertible: from a single
+realization $\hat{s} = s + n$ the underlying $s$ is recoverable only
+in distribution, not pointwise. Hence no $K$ in our canonicalization
+toolbox achieves $K \circ A = \mathrm{id}$, and the conclusion of
+Proposition~2 transfers with the lower-bound argument replaced by the
+noise-rate--distortion lower bound.
+
+\subsection*{A.4 Proof of Theorem~1 (AUROC--TV bound), corrected statement}
+\label{app:proof_tv}
+\emph{Correction in v2.} The v1 proof passed from class-conditional total
+variation to the marginal total variation in its last step. That step
+does not hold in general: the marginal is the mixture
+$\pi_+ P|_{+} + \pi_- P|_{-}$, and a shift that moves the two class
+conditionals in opposite directions can leave the marginal almost
+unchanged while changing the AUROC substantially. The theorem is
+therefore restated in class-conditional form; the marginal quantity is
+retained only as a monitoring heuristic (below), without a guarantee.
+
+Let $Y \in \{0,1\}$ be the binary label and $Z = w(g(X))$ the bounded
+probe score under input $X \sim \mathcal{D}$. Write $P_0|_{y}$ and
+$P_\theta|_{y}$ for the class-conditional score distributions under the
+clean and the acquisition-shifted input distributions, $y \in \{+,-\}$.
+Assume labels are unaffected by acquisition (no label shift). The AUROC
+is the probability that an independent positive outranks a negative,
+\[
+\mathcal{A}(f; \mathcal{D}) = \Pr_{(Z^+, Z^-) \sim P|_{+} \otimes
+P|_{-}} [Z^+ > Z^-].
+\]
+
+\textbf{Theorem 1 (restated).} For any bounded-score classifier $f$,
+writing $\Delta\mathcal{A} = \mathcal{A}(f;\mathcal{D}_0)-\mathcal{A}(f;\mathcal{D}_\theta)$
+and $\mathrm{TV}_y = \mathrm{TV}(P_0|_{y},P_\theta|_{y})$,
+$D_y = D_{\mathrm{KL}}(P_\theta|_{y}\,\|\,P_0|_{y})$ for $y\in\{+,-\}$,
+\begin{align*}
+|\Delta\mathcal{A}| &\le \mathrm{TV}_{+} + \mathrm{TV}_{-} \\
+&\le \sqrt{\tfrac12 D_{+}} + \sqrt{\tfrac12 D_{-}} .
+\end{align*}
+
+\textbf{Proof.} By Strassen's theorem there exist couplings
+$(Z^+, Z'^{+})$ with marginals $(P_0|_{+}, P_\theta|_{+})$ and
+$(Z^-, Z'^{-})$ with marginals $(P_0|_{-}, P_\theta|_{-})$ such that
+$\Pr(Z^+\neq Z'^{+}) = \mathrm{TV}(P_0|_{+},P_\theta|_{+})$ and
+$\Pr(Z^-\neq Z'^{-}) = \mathrm{TV}(P_0|_{-},P_\theta|_{-})$; take the two
+couplings independent of each other. On the event
+$\{Z^+ = Z'^{+}\}\cap\{Z^- = Z'^{-}\}$ the indicators
+$\mathbf 1[Z^+>Z^-]$ and $\mathbf 1[Z'^{+}>Z'^{-}]$ coincide, so
+\begin{align*}
+&\bigl|\Pr[Z^+>Z^-]-\Pr[Z'^{+}>Z'^{-}]\bigr| \\
+&\quad\le \Pr\bigl(Z^+\neq Z'^{+}\bigr) + \Pr\bigl(Z^-\neq Z'^{-}\bigr)
+ = \mathrm{TV}_{+} + \mathrm{TV}_{-}
+\end{align*}
+by the union bound. The second inequality is Pinsker applied to each
+class conditional~\cite{pinsker1964information, cover2006elements}.
+$\square$
+
+\textbf{Remarks.} (i) The constant is $1$ per class, not $2$; the v1
+factor $4$ arose from a loose union bound followed by the invalid
+mixture step. (ii) The bound is in terms of class-conditional score
+distributions and therefore requires labels to evaluate. At deployment
+labels are unavailable; the quantity that can be monitored is the
+marginal score distribution $P_\theta$. Its distance from $P_0$ is a
+\emph{heuristic proxy} for the class-conditional distances: small
+marginal shift does not imply small AUROC change, because opposite
+class-conditional movements can cancel in the mixture.
+
+\paragraph{Empirical check (Section IV-C).} On the v2 sweep the
+class-conditional bound of Theorem~1 holds on all $40$ measured
+non-identity arms, as it must; it is loose (the class-conditional total
+variations sum to more than $1$ on the strongly shifted arms, where the
+bound is vacuous). The marginal ratio $C_{\mathrm{arm}} =
+|\Delta\mathrm{AUROC}| / \mathrm{TV}(P_0,P_\theta)$ has median $0.15$
+and maximum $1.41$ (the $128$\,Hz naive arm, where a marginal shift of
+$0.17$ accompanies an AUROC loss of $0.17$). A marginal constant below
+$1$, as v1 reported ($0.47$), does not exist for this sweep; this is the
+expected behaviour of the marginal heuristic and the reason the theorem
+is stated class-conditionally.
+
+\subsection*{A.5 Composability of axes}
+The five-axis sweep treats each axis independently. In deployment, two
+or more axes co-occur. Composability follows from operator
+composition, $A_{\theta_1, \theta_2} = A_{\theta_2} \circ A_{\theta_1}$,
+and recoverability composes under invertibility.
+\begin{lemma}\label{lem:compose}
+If $A_{\theta_1}$ and $A_{\theta_2}$ are both $(f,0)$-recoverable with
+canonicalizations $K_{\theta_1}, K_{\theta_2}$, then their composition
+is $(f, 0)$-recoverable with $K = K_{\theta_1} \circ K_{\theta_2}$. If
+either component is irrecoverable in the sense of Proposition~2, the
+composition is irrecoverable with the same lower-bound argument applied
+to the dominant operator.
+\end{lemma}
+
+\paragraph{Practical implication.} The lemma orders the deployment
+response: a recording whose broadband SNR is below the measured
+envelope is not recovered by any combination of the invertible stages
+(notch, rescaling, resampling), so an intake gate on the SNR axis is
+justified irrespective of the metadata on the other axes, whereas a
+recording that is off-contract only on invertible axes is admitted and
+canonicalized. In v2 the sub-Nyquist example used in v1 no longer
+applies to this classifier, since $128$\,Hz acquisition is inside the
+measured envelope (\S IV-B); the composition rule itself is unchanged.
+
+\subsection*{A.6 Relation to prior frameworks}
+The Ben-David et al.\ domain-adaptation bound~\cite{bendavid2010theory}
+\[
+\varepsilon_T(h) \le \varepsilon_S(h) +
+\tfrac{1}{2} d_{\mathcal{H}\Delta\mathcal{H}}(\mathcal{D}_S, \mathcal{D}_T) +
+\lambda
+\]
+gives a divergence bound on \emph{target risk} for an arbitrary
+classifier in $\mathcal{H}$. Our framework is complementary in three
+ways: (i)~the bound is on the \emph{deployed} classifier $f$, not the
+worst $h$; (ii)~the divergence is on the per-recording \emph{score}
+distribution, computable from a single deployment without unlabelled
+target samples; (iii)~the recoverability predicate is a
+\emph{structural} property of the acquisition operator that allows us
+to predict the partition before collecting any data.
+
+
+\section*{B. Per-cell metrics for every backbone}
+\subsection*{B.1 Per-cell metrics}
+Tables~\ref{tab:s1-eegpt}--\ref{tab:s1-biot} give, for each backbone,
+the AUROC, balanced accuracy and expected calibration error of both
+arms in every cell of the sweep, averaged over the three MLP-probe
+seeds. The broadband (A5) and low-pass (B) axes have no corrective
+stage, so their two arms coincide by construction. Values are
+traceable to \texttt{results/sweep\_<backbone>\_mlp\_s<seed>.csv} in
+the released repository.
+
+\begin{table}[htbp]
+\caption{EEGPT: per-cell metrics, mean over MLP seeds 7/11/13.}
+\label{tab:s1-eegpt}
+\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\IfFileExists{../agg/table_S1_eegpt.tex}{\input{../agg/table_S1_eegpt.tex}}{\emph{pending}}
+\end{table}
+
+\begin{table}[htbp]
+\caption{LaBraM: per-cell metrics, mean over MLP seeds 7/11/13.}
+\label{tab:s1-labram}
+\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\IfFileExists{../agg/table_S1_labram.tex}{\input{../agg/table_S1_labram.tex}}{\emph{pending}}
+\end{table}
+
+\begin{table}[htbp]
+\caption{BIOT: per-cell metrics, mean over MLP seeds 7/11/13.}
+\label{tab:s1-biot}
+\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\IfFileExists{../agg/table_S1_biot.tex}{\input{../agg/table_S1_biot.tex}}{\emph{pending}}
+\end{table}
+
+
+\section*{C. Tables moved from the main text}
+\begin{table}[htbp]
+\caption{Five-axis sweep on TUAB eval ($n{=}276$): AUROC of the naive and
+canonicalized arms, mean over three MLP seeds. Stars on the canonicalized
+value: canonicalized-vs-naive DeLong contrast on the seed-7 probe
+surviving Benjamini--Hochberg at $q{=}0.05$ ($^{*}p<0.05$, $^{**}p<0.01$,
+$^{***}p<0.001$). Identity rows omitted.}
+\label{tab:s4-sweep}
+\centering\scriptsize\setlength{\tabcolsep}{2pt}
+\IfFileExists{../agg/table_multi_full.tex}{\input{../agg/table_multi_full.tex}}{\emph{pending}}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Failure-category counts on TUAB eval per backbone and arm
+(seed-7 probes; the $12$ non-identity cells of A1--A3), with the number
+of ground-truth normal recordings in parentheses.}
+\label{tab:s5-failure}
+\centering\tiny\setlength{\tabcolsep}{1.6pt}
+\IfFileExists{../agg/table_failure_multi.tex}{\input{../agg/table_failure_multi.tex}}{\emph{pending}}
+\end{table}
+
+\begin{table}[htbp]
+\caption{The five operators and the contract stage each naive arm
+disables. Operators act on raw microvolts at native rate $f_s$.}
+\label{tab:s6-operators}
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}llll@{}}
+\toprule
+Axis & Operator $A_\theta$ on raw $\mu$V & Left-inverse in contract & Stage disabled (naive) \\
+\midrule
+A1 rate & anti-aliased resample $f_s\!\to\!f_n$ & resample $f_n\!\to\!250$\,Hz (C2) & no resample \\
+A2 gain & $\times g$, all channels & per-recording robust z (C3) & fixed-scale z \\
+A3 mains & $+$ mains $+$ harmonics $<f_n/2$, per-electrode amp./phase & notch at mains (C5) & notch off \\
+A4 montage & drop channels / bipolar export & CAR over present channels (C4) & CAR over all 19 \\
+A5 SNR & $+$ white noise per channel & none & none (arms identical) \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[htbp]
+\caption{Four contemporaneous approaches to heterogeneous EEG
+acquisition. ``Fixes'' means a deterministic preprocessing contract;
+``learns'' means invariance is trained into a model; ``measures''
+means acquisition shift is simulated and recovery is measured.}
+\label{tab:s7-compare}
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Approach & Harmonization & Backbones & Shift simulated & Stage attribution \\
+\midrule
+BRIDGE-EEG~\cite{chowdhury2026bridge} & fixes (62-ch, 1--50 Hz, STFT) & own SE-ResNets & no & no \\
+PRISM~\cite{prism2026} & learns (multi-source MAE) & own & no & no \\
+GCN montage~\cite{gcnharmonization2026} & learns (electrode graph) & task CNNs & no & no \\
+ESF (this work) & fixes (19-ch, 250 Hz, CAR, robust z) & three public, frozen & five axes, raw $\mu$V & per stage, per backbone \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\section*{D. Extended results}
+\subsection{Pinsker bound validation}
+\label{sec:pinsker_emp}
+For each measured (axis, severity, arm) we compute the AUROC gap to the
+clean reference and two distances between per-recording logit
+distributions: the class-conditional total variations of
+Theorem~1 (which require labels and are available here) and
+the marginal total variation (which a deployed system can observe
+without labels). \PINSKERNUMBERS\ The implied ratio $C_{\mathrm{arm}} =
+|\Delta\mathrm{AUROC}| / \mathrm{TV}(P_0, P_\theta)$ is reported per
+arm; because $C_{\max}$ is the maximum of these ratios over the same
+arms, the statement that the marginal bound with $C_{\max}$ holds on
+every arm is a consistency check by construction, not an independent
+validation. A deployed monitor that raises an alarm when the marginal
+logit shift exceeds a threshold calibrated on such a sweep is a
+heuristic without the guarantee of Theorem~1.
+
+
+\subsection{Can a label-free monitor substitute for the contract?}
+\label{sec:monitor}
+A deployed system that does not apply the contract could still try to
+\emph{detect} off-contract recordings and abstain. We test the two
+label-free statistics available at inference: the across-group
+variance of the recording's logits (the abstention statistic of
+\S III-B of the main text) and the calibrated confidence $|p-0.5|$. For each
+naive-arm cell with at least ten catastrophic recordings we ask
+whether the statistic ranks the catastrophic recordings above the
+rest, and what abstaining on it buys. It does not work. The logit
+variance ranks catastrophic recordings at chance (median AUROC $0.54$
+across $11$ cells, range $0.35$--$0.71$); abstaining on the
+highest-variance $20\%$ of recordings removes a median $24\%$ of the
+catastrophic ones, and abstaining on $50\%$ removes $58\%$, both
+indistinguishable from random abstention, with no consistent AUROC
+gain on the retained set. Confidence is worse than useless for this
+purpose (median AUROC $0.57$, but inverted on the sampling-rate and
+broadband cells), because the catastrophic recordings are by
+definition confidently wrong. Uncorrected acquisition shift produces
+failures that look, to the model, like ordinary confident decisions.
+That is the strongest argument in this study for applying the
+contract rather than detecting its absence.
+
+
+\subsection{Reliability of the clean probes}
+Figure~\ref{fig:s-reliability} gives the reliability diagram of the
+Platt-scaled EEGPT seed-7 probe on the clean eval split.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\columnwidth]{fig_reliability.pdf}
+\caption{Reliability diagram, EEGPT seed-7 MLP probe, clean ESF eval
+split ($n{=}276$); ECE $0.121$ (10 equal-width bins), per-bin Wilson
+$95\%$ intervals.}
+\label{fig:s-reliability}
+\end{figure}
+
+\section*{E. Provenance, compute, version note and future work}
+\textit{Provenance.} Backbones are the public braindecode checkpoints
+\texttt{eegpt-pretrained} (Hugging Face revision \texttt{e41cb3ae},
+SHA-256 prefix \texttt{fb34c206}), \texttt{labram-pretrained}
+(\texttt{0563b6c6}, \texttt{53b752ed}) and
+\texttt{biot-pretrained-prest-16chs} (\texttt{f85518e9},
+\texttt{b5892144}), loaded with braindecode~1.5.2 (commit
+\texttt{619c7c01}), PyTorch~2.6.0 with CUDA~12.4, MNE~1.13.2,
+SciPy~1.17.1 and scikit-learn~1.9.1 under Python~3.11.16. The
+train/eval patient-ID intersection is $0$ ($2{,}076$ training and
+$253$ evaluation patients). Feature extraction and probe training are
+deterministic across machines: the EEGPT seed-$7$ probe reproduced its
+validation AUROC to six decimals ($0.912151$) on a second machine.
+
+
+\textit{Compute.} One NVIDIA A100 (40\,GB) and one A10: corpus
+transfer $13$\,min, per-backbone train-split feature extraction
+$15$--$36$\,min, four probes under $15$\,min, and the $46$-cell cache
+$1$--$3$\,h per backbone, dominated by EDF reading and canonicalization
+on CPU rather than by the backbone. Every number in the paper
+regenerates from the released caches without a GPU.
+
+% ===================== VERSION NOTE =============================
+
+\subsection{Version note (v2), in full}
+
+
+v2 corrects v1 in six respects, all found by the author on inspection
+of the v1 code after submission.
+(i)~\emph{Injection point.} v1 applied the acquisition operators after
+canonicalization, contrary to the stated design. The v1 sampling-rate
+axis was therefore a spectral time-warp, the v1 gain arm never composed
+forward and inverse operators, and v1 mains amplitudes were in robust-SD
+units. v2 applies all operators to the raw microvolt recording at native
+rate and reruns all $46$ cells.
+(ii)~\emph{Probe training.} The v1 probe was trained on a
+patient-stratified split of the full TUAB corpus that overlapped the
+evaluation split. The v2 probe is trained on the train split only.
+(iii)~\emph{Theorem~1} is restated in class-conditional form;
+the v1 step to marginal total variation was invalid (Appendix~A.4).
+(iv)~Section D states that $C_{\max}$ is fitted to the
+arms on which it is checked.
+(v)~The conflict-of-interest statement is corrected.
+(vi)~The v1 backbone export embedded an unseeded $19{\to}19$
+channel-projection adapter that is no longer available; v2 initialises
+it from seed $7$, freezes it, and releases it.
+\emph{Withdrawn:} the v1 losses at $128$ and $512$\,Hz, the montage
+calibration recovery, and the empirical support claimed for
+Proposition~2. \emph{Changed:} baseline AUROC $0.908 \to
+0.904$; sampling rate is recovered at every tested rate; the failure
+taxonomy is reported per arm. \emph{Unchanged:} format, byline,
+taxonomy definitions, Appendix~A.5.
+
+% ===================== ACKNOWLEDGEMENTS =========================
+
+\subsection{Future work}
+\textbf{Future work.}
+Each of the following is scoped as a separate follow-up:
+(1)~an adjudicated, labelled multi-recorder study at the partner
+clinics, with intake-side abstention keyed on logit magnitude rather
+than calibrated probability, to close the residual of
+the legacy-recorder section of the main text;
+(2)~cross-corpus replication on TUEP, TUSZ and TUSL using the released
+per-recording protocol;
+(3)~measurement of the band-limit stage proposed above as ESF v1.1,
+per backbone;
+(4)~lightweight fine-tuning ablations (LoRA, last-block unfreeze) to
+test whether the class asymmetry shrinks with mild adaptation or
+persists as a structural property of the pretrained representation;
+(5)~extension of the recoverability framework to composed shifts and
+to ICA-decomposable physiological artifacts (EMG, eye blink), where
+the operator is approximately rather than exactly invertible.
+
+
+\bibliographystyle{IEEEtranN}
+\bibliography{SPMB2026_Dammu_final_v4}
+
+\end{document}

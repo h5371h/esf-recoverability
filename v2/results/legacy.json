@@ -1,0 +1,143 @@
+{
+ "n_files": 7,
+ "n_unique": 6,
+ "recordings": [
+  {
+   "file": "Patient25_NATUSEEG-PC_t1.e",
+   "sha256": "14d84a6a120201a8",
+   "fs_native": 125.0,
+   "n_ch_native": 27,
+   "minutes": 26.5,
+   "esf_channels_resolved": 19
+  },
+  {
+   "file": "Patient26_NATUSEEG-PC_t1.e",
+   "sha256": "0daa87da708f2d4c",
+   "fs_native": 125.0,
+   "n_ch_native": 27,
+   "minutes": 35.81666666666667,
+   "esf_channels_resolved": 19
+  },
+  {
+   "file": "Patient26_NATUSEEG-PC_t1_29Jul.e",
+   "sha256": "7dcee90641328250",
+   "fs_native": 125.0,
+   "n_ch_native": 27,
+   "minutes": 27.9,
+   "esf_channels_resolved": 19
+  },
+  {
+   "file": "Patient4_NATUSEEG-PC_t1.e",
+   "sha256": "4406a0ddaab6855f",
+   "fs_native": 125.0,
+   "n_ch_native": 25,
+   "minutes": 38.45,
+   "esf_channels_resolved": 19
+  },
+  {
+   "file": "Patient5_NATUSEEG-PC_t1.e",
+   "sha256": "6eac813af21c86e6",
+   "fs_native": 125.0,
+   "n_ch_native": 25,
+   "minutes": 25.5,
+   "esf_channels_resolved": 19
+  },
+  {
+   "file": "Patient6_NATUSEEG-PC_t1.e",
+   "sha256": "ab5f31516e9e1e99",
+   "fs_native": 125.0,
+   "n_ch_native": 24,
+   "minutes": 27.616666666666667,
+   "esf_channels_resolved": 19
+  }
+ ],
+ "backbones": {
+  "eegpt": {
+   "legacy_logits": [
+    6.747210502624512,
+    5.023786544799805,
+    9.834644317626953,
+    3.7899441719055176,
+    2.5997531414031982,
+    7.177754878997803
+   ],
+   "legacy_probs": [
+    0.9977052394467515,
+    0.9887723311896591,
+    0.9998683624112865,
+    0.9656079404125995,
+    0.90310616664681,
+    0.9984589165174392
+   ],
+   "percentile_in_clean_eval": [
+    0.855072463768116,
+    0.7934782608695652,
+    0.9746376811594203,
+    0.7391304347826086,
+    0.6702898550724637,
+    0.8768115942028986
+   ],
+   "ks_vs_clean_eval_p": 0.0041691194780083245,
+   "eval_clean_auroc_cell": null,
+   "envelope_125Hz_certified": null
+  },
+  "labram": {
+   "legacy_logits": [
+    10.552934646606445,
+    7.592524528503418,
+    20.970151901245117,
+    7.899853229522705,
+    6.050288677215576,
+    6.927399635314941
+   ],
+   "legacy_probs": [
+    0.9996574460010753,
+    0.9964221516470518,
+    0.9999999119761909,
+    0.9971943209105135,
+    0.9879375034475039,
+    0.9939496957446851
+   ],
+   "percentile_in_clean_eval": [
+    0.9818840579710145,
+    0.9456521739130435,
+    1.0,
+    0.9528985507246377,
+    0.8985507246376812,
+    0.927536231884058
+   ],
+   "ks_vs_clean_eval_p": 4.06267002220549e-06,
+   "eval_clean_auroc_cell": null,
+   "envelope_125Hz_certified": null
+  },
+  "biot": {
+   "legacy_logits": [
+    5.27177619934082,
+    8.41474437713623,
+    2.015873908996582,
+    1.3296302556991577,
+    4.503927230834961,
+    8.349893569946289
+   ],
+   "legacy_probs": [
+    0.9737380717408269,
+    0.9971681442823879,
+    0.7826496434307291,
+    0.6877654297833099,
+    0.9553445468914352,
+    0.9970339142231522
+   ],
+   "percentile_in_clean_eval": [
+    0.8695652173913043,
+    0.9420289855072463,
+    0.6992753623188406,
+    0.6340579710144928,
+    0.822463768115942,
+    0.9384057971014492
+   ],
+   "ks_vs_clean_eval_p": 0.008397117245960695,
+   "eval_clean_auroc_cell": null,
+   "envelope_125Hz_certified": null
+  }
+ }
+}

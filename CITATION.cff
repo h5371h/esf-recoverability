@@ -1,58 +1,53 @@
 cff-version: 1.2.0
 title: >-
-  esf-recoverability: reference implementation and per-recording
-  results for Dammu, "ESF: A Canonical Representation and
-  Recoverability Framework for Deploying Pretrained EEG Classifiers
-  in Heterogeneous Clinics", IEEE SPMB 2026.
+  esf-recoverability: reference implementation, probes and per-recording
+  results for Dammu, "ESF: Harmonizing Heterogeneous EEG Acquisition for
+  Pretrained Classifiers", preprint v2 (September 2026).
 message: >-
-  If you use this code, the per-recording predictions, or the
-  perturbation axes in your work, please cite both the paper
-  (preferred) and this software archive.
+  If you use this code, the probes, the per-recording predictions or the
+  acquisition operators, please cite the preprint (preferred) and this
+  software archive.
 type: software
 authors:
   - given-names: Hitesh
     family-names: Dammu
     email: hdammu@asu.edu
-    affiliation: Independent Researcher
+    affiliation: Independent Researcher, Hyderabad, India
 repository-code: 'https://github.com/h5371h/esf-recoverability'
 url: 'https://github.com/h5371h/esf-recoverability'
 abstract: >-
-  We propose the Encephlian Standard Format (ESF) --- a deterministic
-  canonical EEG signal representation (19-channel 10-20 montage at
-  250 Hz, microvolt-calibrated, channel-wise robust z-scored,
-  average-referenced) --- paired with a recoverability framework that
-  predicts which signal-level acquisition shifts ESF can and cannot
-  close. On TUAB (n = 276 patient-stratified eval), a frozen EEGPT
-  linear probe attains clean AUROC 0.908; five acquisition-shift
-  axes are measured across 46 (axis, severity, arm) cells; a Pinsker
-  AUROC--TV bound holds on 18/18 measured arms; and a class-asymmetric
-  directional failure taxonomy shows 100% of baseline-correct normals
-  flip on at least one shifted cell while 87.4% of baseline-correct
-  abnormals are robust. The repository releases the perturbation
-  library, the canonicalization library, every per-recording
-  prediction, and the statistical-analysis battery.
+  A measurement protocol for a fixed EEG preprocessing contract (the
+  Encephlian Standard Format, ESF). Five acquisition differences (native
+  sampling rate, gain, mains interference, electrode montage, broadband
+  noise) are simulated on raw microvolt TUAB evaluation recordings and
+  three frozen public models (EEGPT, LaBraM, BIOT), each with four
+  probes trained on the TUAB train split only, are scored with the full
+  contract and with the one corrective step that addresses each
+  difference switched off. The repository releases the contract, the
+  operators, the model adapters, all twelve probes, every per-recording
+  prediction, the permuted-label and outlyingness controls, the
+  class-conditional AUROC-TV bound check, the CPU cost benchmark and the
+  scripts that regenerate every table and figure of the preprint. v2
+  supersedes v1 (tag v1.0.0-spmb2026-submission), which was withdrawn
+  from IEEE SPMB 2026 by the author; see the preprint's Version note.
 keywords:
   - electroencephalography
   - EEG
-  - canonical representation
   - acquisition shift
-  - recoverability
-  - selective prediction
+  - preprocessing contract
+  - pretrained models
   - reproducibility
-  - SPMB
 license: MIT
-version: 1.0.1
-doi: 10.5281/zenodo.22727770
-date-released: '2026-06-30'
+version: 2.0.0
+date-released: '2026-09-16'
 preferred-citation:
-  type: conference-paper
+  type: report
   title: >-
-    ESF: A Canonical Representation and Recoverability Framework for
-    Deploying Pretrained EEG Classifiers in Heterogeneous Clinics
+    ESF: Harmonizing Heterogeneous EEG Acquisition for Pretrained
+    Classifiers
   authors:
     - given-names: Hitesh
       family-names: Dammu
-  collection-title: >-
-    Proceedings of the IEEE Signal Processing in Medicine and Biology
-    Symposium (SPMB)
   year: 2026
+  notes: Preprint v2, Zenodo
+  doi: 10.5281/zenodo.22727127

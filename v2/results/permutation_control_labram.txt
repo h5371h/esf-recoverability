@@ -1,0 +1,12 @@
+/tmp/perm_labram_1.pt: eval AUROC 0.3965 (n=276)
+/tmp/perm_labram_2.pt: eval AUROC 0.5039 (n=276)
+/tmp/perm_labram_3.pt: eval AUROC 0.3105 (n=276)
+/tmp/perm_labram_4.pt: eval AUROC 0.6130 (n=276)
+/tmp/perm_labram_5.pt: eval AUROC 0.5630 (n=276)
+/tmp/perm_labram_6.pt: eval AUROC 0.5395 (n=276)
+/tmp/perm_labram_7.pt: eval AUROC 0.3648 (n=276)
+/tmp/perm_labram_8.pt: eval AUROC 0.4696 (n=276)
+/tmp/perm_labram_9.pt: eval AUROC 0.4561 (n=276)
+/tmp/perm_labram_10.pt: eval AUROC 0.6301 (n=276)
+/tmp/perm_labram_lin.pt: eval AUROC 0.5115 (n=276)
+PERMUTATION_CONTROL_DONE labram
