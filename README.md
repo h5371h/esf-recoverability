@@ -7,7 +7,7 @@
 > Nothing from the v1 run is used in v2; the v1 snapshot remains at tag `v1.0.0-spmb2026-submission` for the record.
 
 **Paper:** *ESF: Harmonizing Heterogeneous EEG Acquisition for Pretrained Classifiers* — preprint v2, Zenodo DOI
-10.5281/zenodo.22727127 (new version). Code archive: this release, tag `v2.0.0-preprint-v2`.
+10.5281/zenodo.22727127 (new version). Code archive: this release, tag `v2.0.0-preprint-v2`, DOI 10.5281/zenodo.22771925.
 
 ## What is in `v2/`
 
